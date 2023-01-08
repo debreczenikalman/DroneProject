@@ -60,16 +60,16 @@
     //#define MINTHROTTLE 1120 // for Super Simple ESCs 10A
     //#define MINTHROTTLE 1064 // special ESC (simonk)
     //#define MINTHROTTLE 1050 // for brushed ESCs like ladybird
-    #define MINTHROTTLE 1150 // (*) (**)
+    #define MINTHROTTLE 1050 // (*) (**)
 
   /****************************    Motor maxthrottle    *******************************/
     /* this is the maximum value for the ESCs at full power, this value can be increased up to 2000 */
-    #define MAXTHROTTLE 1850
+    #define MAXTHROTTLE 1500
 
   /****************************    Mincommand          *******************************/
     /* this is the value for the ESCs when they are not armed
        in some cases, this value must be lowered down to 900 for some specific ESCs, otherwise they failed to initiate */
-    #define MINCOMMAND  1000
+    #define MINCOMMAND  900
 
   /**********************************  I2C speed for old WMP config (useless config for other sensors)  *************/
     #define I2C_SPEED 100000L     //100kHz normal mode, this value must be used for a genuine WMP
@@ -201,8 +201,8 @@
       //#define ADCACC
 
       /* enforce your individual sensor orientation - even overrides board specific defaults */
-      //#define FORCE_ACC_ORIENTATION(X, Y, Z)  {imu.accADC[ROLL]  =  Y; imu.accADC[PITCH]  = -X; imu.accADC[YAW]  = Z;}
-      //#define FORCE_GYRO_ORIENTATION(X, Y, Z) {imu.gyroADC[ROLL] = -Y; imu.gyroADC[PITCH] =  X; imu.gyroADC[YAW] = Z;}
+      #define FORCE_ACC_ORIENTATION(X, Y, Z)  {imu.accADC[ROLL]  =  -Y; imu.accADC[PITCH]  = -X; imu.accADC[YAW]  = Z;}
+      #define FORCE_GYRO_ORIENTATION(Y, X, Z) {imu.gyroADC[ROLL] = -Y; imu.gyroADC[PITCH] =  X; imu.gyroADC[YAW] = -Z;}
       //#define FORCE_MAG_ORIENTATION(X, Y, Z)  {imu.magADC[ROLL]  =  X; imu.magADC[PITCH]  =  Y; imu.magADC[YAW]  = Z;}
 
       /* Board orientation shift */
@@ -229,12 +229,12 @@
     #define YAW_DIRECTION 1
     //#define YAW_DIRECTION -1 // if you want to reverse the yaw correction direction
 
-    #define ONLYARMWHENFLAT //prevent the copter from arming when the copter is tilted
+    //#define ONLYARMWHENFLAT //prevent the copter from arming when the copter is tilted
 
    /********************************    ARM/DISARM    *********************************/
    /* optionally disable stick combinations to arm/disarm the motors.
      * In most cases one of the two options to arm/disarm via TX stick is sufficient */
-    #define ALLOW_ARM_DISARM_VIA_TX_YAW
+    //#define ALLOW_ARM_DISARM_VIA_TX_YAW
     //#define ALLOW_ARM_DISARM_VIA_TX_ROLL
 
     /********************************    SERVOS      *********************************/
@@ -402,6 +402,9 @@ At this moment you can use this function only with WinGUI 2.3 release. MultiWiiC
     //#define SUMD PITCH,YAW,THROTTLE,ROLL,AUX1,AUX2,AUX3,AUX4
     //#define RX_SERIAL_PORT 1
 
+/*************************************************************************************************/
+#define HC12RX
+/*************************************************************************************************/
 /*************************************************************************************************/
 /*****************                                                                 ***************/
 /****************  SECTION  4 - ALTERNATE CPUs & BOARDS                                    *******/
