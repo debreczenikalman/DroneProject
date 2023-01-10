@@ -35,7 +35,9 @@ SOFTWARE.
 #define PADDING 10
 #define THROTTLE_INC 11
 
-#define THROTTLE_CAP 300 
+#define THROTTLE_CAP 500 // set max throttle if engines are too powerful and would launch the drone violently
+#define MOVEMENT false // set false to disable all movement for testing purposes (to evaluate hovering capabilities)
+#define MOVEMENT_CAP 50 // cap movement (yaw, pitch, roll) to if high numbers are dangerous 
 
 int16_t HC12_rcData[RC_CHANS];
 
@@ -96,18 +98,59 @@ void HC12_Read_RC() {
           }
         }
         */
-        
         boundHigh = input.indexOf(delimiter, boundLow+1);
-        yaw = 512;//input.substring(boundLow+1, boundHigh).toInt();
+        if(MOVEMENT){
+          if(yaw < 512){
+            if(yaw > 512-MOVEMENT_CAP){
+              yaw = input.substring(boundLow+1, boundHigh).toInt();
+            } else {
+              yaw = 512-MOVEMENT_CAP;
+            }
+          } else { // yaw > 512
+            if(yaw < 512+MOVEMENT_CAP){
+              yaw = input.substring(boundLow+1, boundHigh).toInt();
+            } else {
+              yaw = 512+MOVEMENT_CAP;
+            }
+          }
+        }
       
         boundLow = input.indexOf(delimiter, boundHigh+1);
-        pitch = input.substring(boundHigh+1, boundLow).toInt();
-
+        if(MOVEMENT){
+          if(pitch < 512){
+            if(pitch > 512-MOVEMENT_CAP){
+              pitch = input.substring(boundHigh+1, boundLow).toInt();
+            } else {
+              pitch = 512-MOVEMENT_CAP;
+            }
+          } else { // pitch > 512
+            if(pitch < 512+MOVEMENT_CAP){
+              pitch = input.substring(boundHigh+1, boundLow).toInt();
+            } else {
+              pitch = 512+MOVEMENT_CAP;
+            }
+          }
+        }
+        
         boundHigh = input.indexOf(delimiter, boundLow+1);
-        roll = input.substring(boundLow+1, boundHigh).toInt();
+        if(MOVEMENT){
+          if(roll < 512){
+            if(roll > 512-MOVEMENT_CAP){
+              roll = input.substring(boundLow+1, boundHigh).toInt();
+            } else {
+              roll = 512-MOVEMENT_CAP;
+            }
+          } else { // roll > 512
+            if(roll < 512+MOVEMENT_CAP){
+              roll = input.substring(boundLow+1, boundHigh).toInt();
+            } else {
+              roll = 512+MOVEMENT_CAP;
+            }
+          }
+        }
+        
 
         boundLow = input.indexOf(delimiter, boundHigh+1);
-
         if(throttle == 0){                                                  // can only arm or disarm when no throttle
           aux1 = input.substring(boundHigh+1, boundLow).toInt();
         }
@@ -142,6 +185,7 @@ void HC12_Read_RC() {
       digitalWrite(LED_BUILTIN, LOW);
       HC12.println("OK");
     }
+    
     lastRunTime = millis();
     HC12_rcData[THROTTLE] = map(throttle, 0, 1023, 1000, 2000);
     HC12_rcData[YAW] = map(yaw, 0, 1023, 1000, 2000);
@@ -149,6 +193,10 @@ void HC12_Read_RC() {
     HC12_rcData[ROLL] = map(roll, 0, 1023, 1000, 2000);
     HC12_rcData[AUX1] = map(aux1, 0, 1, 1100, 2000);
     HC12_rcData[AUX2] = map(aux2, 0, 1, 1100, 2000);
+    
+    
+    
+    
   }
 }
 #endif
