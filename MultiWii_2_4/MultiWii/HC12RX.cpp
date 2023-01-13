@@ -33,10 +33,10 @@ SOFTWARE.
 #if defined(HC12RX)
 
 #define PADDING 10
-#define THROTTLE_INC 11
+#define THROTTLE_INC 5
 
 #define THROTTLE_CAP 500 // set max throttle if engines are too powerful and would launch the drone violently
-#define MOVEMENT false // set false to disable all movement for testing purposes (to evaluate hovering capabilities)
+#define MOVEMENT true // set false to disable all movement for testing purposes (to evaluate hovering capabilities)
 #define MOVEMENT_CAP 50 // cap movement (yaw, pitch, roll) to if high numbers are dangerous 
 
 int16_t HC12_rcData[RC_CHANS];
@@ -79,25 +79,28 @@ void HC12_Read_RC() {
         boundLow = input.indexOf(delimiter);        
         int throttle_det = input.substring(0, boundLow).toInt(); 
         ////////////////////////////////////////////////////////////////    throttle capped because its too powerful
+        
         if(throttle_det > THROTTLE_CAP){
           throttle = THROTTLE_CAP;
         } else {
           throttle = throttle_det;
         }
-        ////////////////////////////////////////////////////////////////
+        
+        ////////////////////////////////////////////////////////////////  
         /*
-        if(throttle_det >= 600){
+        if(throttle_det >= 923){
           if(throttle <= (1023 - THROTTLE_INC)){
             throttle += THROTTLE_INC;
           }
         }
 
-        if(throttle_det <= 424){
+        if(throttle_det <= 100){
           if(throttle >= THROTTLE_INC){
             throttle -= THROTTLE_INC;
           }
         }
         */
+        ///////////////////////////////////////////////////////////////
         boundHigh = input.indexOf(delimiter, boundLow+1);
         if(MOVEMENT){
           if(yaw < 512){
@@ -151,7 +154,7 @@ void HC12_Read_RC() {
         
 
         boundLow = input.indexOf(delimiter, boundHigh+1);
-        if(throttle == 0){                                                  // can only arm or disarm when no throttle
+        if(throttle < 50){                                                  // can only arm or disarm when "almost" no throttle
           aux1 = input.substring(boundHigh+1, boundLow).toInt();
         }
         
@@ -183,7 +186,7 @@ void HC12_Read_RC() {
     }
     else{
       digitalWrite(LED_BUILTIN, LOW);
-      HC12.println("OK");
+      //HC12.println("OK");
     }
     
     lastRunTime = millis();
