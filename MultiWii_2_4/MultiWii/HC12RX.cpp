@@ -35,9 +35,9 @@ SOFTWARE.
 #define PADDING 10
 #define THROTTLE_INC 5
 
-#define THROTTLE_CAP 500 // set max throttle if engines are too powerful and would launch the drone violently
+#define THROTTLE_CAP 1023 // set max throttle if engines are too powerful and would launch the drone violently
 #define MOVEMENT true // set false to disable all movement for testing purposes (to evaluate hovering capabilities)
-#define MOVEMENT_CAP 50 // cap movement (yaw, pitch, roll) to if high numbers are dangerous 
+#define MOVEMENT_CAP 1023 // cap movement (yaw, pitch, roll) to if high numbers are dangerous 
 
 int16_t HC12_rcData[RC_CHANS];
 
@@ -103,52 +103,31 @@ void HC12_Read_RC() {
         ///////////////////////////////////////////////////////////////
         boundHigh = input.indexOf(delimiter, boundLow+1);
         if(MOVEMENT){
-          if(yaw < 512){
-            if(yaw > 512-MOVEMENT_CAP){
-              yaw = input.substring(boundLow+1, boundHigh).toInt();
-            } else {
+          yaw = input.substring(boundLow+1, boundHigh).toInt();
+          if(yaw < 512-MOVEMENT_CAP){
               yaw = 512-MOVEMENT_CAP;
-            }
-          } else { // yaw > 512
-            if(yaw < 512+MOVEMENT_CAP){
-              yaw = input.substring(boundLow+1, boundHigh).toInt();
-            } else {
+          } else if(yaw > 512+MOVEMENT_CAP){
               yaw = 512+MOVEMENT_CAP;
-            }
           }
         }
       
         boundLow = input.indexOf(delimiter, boundHigh+1);
         if(MOVEMENT){
-          if(pitch < 512){
-            if(pitch > 512-MOVEMENT_CAP){
-              pitch = input.substring(boundHigh+1, boundLow).toInt();
-            } else {
+          pitch = input.substring(boundHigh+1, boundLow).toInt();
+          if(pitch < 512-MOVEMENT_CAP){
               pitch = 512-MOVEMENT_CAP;
-            }
-          } else { // pitch > 512
-            if(pitch < 512+MOVEMENT_CAP){
-              pitch = input.substring(boundHigh+1, boundLow).toInt();
-            } else {
+          } else if(pitch > 512+MOVEMENT_CAP){
               pitch = 512+MOVEMENT_CAP;
-            }
           }
         }
         
         boundHigh = input.indexOf(delimiter, boundLow+1);
         if(MOVEMENT){
-          if(roll < 512){
-            if(roll > 512-MOVEMENT_CAP){
-              roll = input.substring(boundLow+1, boundHigh).toInt();
-            } else {
+          roll = input.substring(boundLow+1, boundHigh).toInt();
+          if(roll < 512-MOVEMENT_CAP){
               roll = 512-MOVEMENT_CAP;
-            }
-          } else { // roll > 512
-            if(roll < 512+MOVEMENT_CAP){
-              roll = input.substring(boundLow+1, boundHigh).toInt();
-            } else {
+          } else if(roll > 512+MOVEMENT_CAP){
               roll = 512+MOVEMENT_CAP;
-            }
           }
         }
         
