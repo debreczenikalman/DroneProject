@@ -5,7 +5,7 @@ using UnityEngine;
 public class ResetHandler : MonoBehaviour
 {
 
-	public float rightHandleDefaultPosY = 0;
+	// public float rightHandleDefaultPosY;
 	public bool rightHandleIsDragging = false;
 	public GameObject RightJoystickGameObj;
 	public GameObject RightHandleGameObj;
@@ -16,19 +16,20 @@ public class ResetHandler : MonoBehaviour
 	void Start()
 	{
 		fj = RightJoystickGameObj.GetComponent<FixedJoystick>();
-		RightHandleGameObj.transform.SetLocalPositionAndRotation(new Vector3(0, -127, 0), new Quaternion());
+		// rightHandleDefaultPosY = -128;
+		// RightHandleGameObj.transform.SetLocalPositionAndRotation(new Vector3(0, -127, 0), new Quaternion());
 	}
-
+	
 	// Update is called once per frame
 	void Update()
 	{
 		if(fj.isDragging)
 		{
-			rightHandleDefaultPosY = RightHandleGameObj.transform.localPosition.y;
+			// rightHandleDefaultPosY = RightHandleGameObj.transform.localPosition.y;
 		} 
 		else
 		{
-			RightHandleGameObj.transform.SetLocalPositionAndRotation(new Vector3(0, rightHandleDefaultPosY, 0),new Quaternion());
+			RightHandleGameObj.transform.SetLocalPositionAndRotation(new Vector3(0, 0, 0),new Quaternion());
 		}
 	}
 }

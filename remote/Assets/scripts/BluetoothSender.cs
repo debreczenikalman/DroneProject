@@ -68,7 +68,7 @@ public class BluetoothSender : MonoBehaviour
 			{
 				BluetoothService.WritetoBluetooth(dataToSend);
 			}
-			// Debug.Log(dataToSend);
+			Debug.Log(dataToSend);
 			millisecondsSinceLastSend = 0;
 		}
 	}
